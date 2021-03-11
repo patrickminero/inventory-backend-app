@@ -1,0 +1,1 @@
+json.extract! @company, :name, :location, :service, :categories, :subcategories
