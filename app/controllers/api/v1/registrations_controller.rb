@@ -10,7 +10,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
         messages: "Sign Up Successfully",
         is_success: true,
         data: {user: user}
-      }, status: :ok
+      }, status: :created
     else
       render json: {
         messages: "Sign Up Failded",
