@@ -31,5 +31,16 @@ RSpec.describe "Products", type: :request do
       get "/api/v1/companies/#{company.id}/products/#{product.id}"
       expect(JSON.parse(response.body)["content"]["name"]).to eq(product.name)
     end
+
+    it 'should be able to update quantity' do
+      user = User.create(email: 'test@email.com', password: 'asdasd', password_confirmation: 'asdasd')
+      company = FactoryBot.create(:company, name: 'Apple, INC', location: 'Menlopark, CA', service: 'Technology', categories: ['Software', 'Hardware'], subcategories: ['Computers', 'Smartphones'], user: user)
+      location = FactoryBot.create(:location, name: 'Store#001', address: 'Gran via de les Corts Catalanes 470', company: company)
+      product = FactoryBot.create(:product, name: 'Iphone X', price: 799.99, description: 'Black matte 5.6 in screen', category: 'Hardware', subcategory: 'Smartphones', sku: rand(1000000..2000000), company: company, quantity: 300, product_attributes: {color: 'black matte', screen_size: '5.6'}, product_type: 'Fixed', location: location)
+      random = rand(10..50)
+
+      post "/api/v1/companies/#{company.id}/products/#{product.id}/update_quantity?quantity=#{random}"
+      expect(JSON.parse(response.body)["product"]["quantity"]).to eq(random)
+    end
   end
 end

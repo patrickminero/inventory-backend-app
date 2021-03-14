@@ -35,6 +35,13 @@ class Api::V1::ProductsController < ApplicationController
     end
   end
 
+  def update_quantity
+    @product = Product.find(params[:product_id])
+    quantity = params[:quantity]
+    @product.update_quantity(quantity)
+    render json: { product: @product }
+  end
+
   private
 
   def set_product
