@@ -26,13 +26,14 @@ subcategories = ['Dress shirts', 'Jeans', 'Ankle socks', 'Leather Jackets', 'Cot
 variable = ['variable', 'fixed']
 user = User.create!(email: 'patrick@email.com', password: 'asdasd', password_confirmation: 'asdasd')
 user2 = User.create!(email: 'marta@email.com', password: 'asdasd', password_confirmation: 'asdasd')
-p "Created user #{user.email}"
+p "Created #{User.count} users"
+
 company = Company.create!(name: 'Clothery SL', location: 'Barcelona, Catalonia, Spain', service: 'Retail', categories: categories, subcategories: subcategories, user: user)
 p "Created company #{company.name}"
 
-location = Location.new(name: 'Store#001', address: 'Gran via de les Corts Catalanes 560, Barcelona, Spain 08015', company: company)
-location.users << [ user.id, user2.id ]
-location.save!
+location = Location.create!(name: 'Store#001', address: 'Gran via de les Corts Catalanes 560, Barcelona, Spain 08015', company: company)
+
+
 p "Created Location #{location.name} for company #{company.name}"
 categories.each do |cat|
   counter = 0
