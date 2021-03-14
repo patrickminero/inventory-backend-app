@@ -33,6 +33,10 @@ p "Created company #{company.name}"
 
 location = Location.create!(name: 'Store#001', address: 'Gran via de les Corts Catalanes 560, Barcelona, Spain 08015', company: company)
 
+user.location_id = location.id
+user2.location_id = location.id
+user.save!
+user2.save!
 
 p "Created Location #{location.name} for company #{company.name}"
 categories.each do |cat|

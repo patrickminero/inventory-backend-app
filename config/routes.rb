@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         post "sign_in", to: "sessions#create"
       end
       resources :companies, only: [ :index, :show, :update, :create, :destroy ] do
+        resources :locations
         resources :products, only: [:index, :show, :update, :create, :destroy ] do
           post 'update_quantity', to: 'products#update_quantity'
         end
