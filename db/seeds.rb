@@ -8,6 +8,8 @@
 p 'Starting seeds'
 Product.destroy_all
 p 'Destroyed all products'
+Location.destroy_all
+p 'Destroy all locations'
 Company.destroy_all
 p 'Destroyed all companies'
 User.destroy_all
@@ -23,16 +25,20 @@ subcategories = ['Dress shirts', 'Jeans', 'Ankle socks', 'Leather Jackets', 'Cot
 
 variable = ['variable', 'fixed']
 user = User.create!(email: 'patrick@email.com', password: 'asdasd', password_confirmation: 'asdasd')
+user2 = User.create!(email: 'marta@email.com', password: 'asdasd', password_confirmation: 'asdasd')
 p "Created user #{user.email}"
 company = Company.create!(name: 'Clothery SL', location: 'Barcelona, Catalonia, Spain', service: 'Retail', categories: categories, subcategories: subcategories, user: user)
 p "Created company #{company.name}"
 
-
+location = Location.new(name: 'Store#001', address: 'Gran via de les Corts Catalanes 560, Barcelona, Spain 08015', company: company)
+location.users << [ user.id, user2.id ]
+location.save!
+p "Created Location #{location.name} for company #{company.name}"
 categories.each do |cat|
   counter = 0
   size.each do |prod|
     
-    Product.create!(name: "#{cat} #{prod}", price: rand(10..30), company: company, description: description, category: cat, subcategory: subcategories[counter], sku: rand(1000000..2000000).to_s, quantity: rand(50..150), product_type: variable.sample, product_attributes: {size: size.sample, color: color.sample, fabric: fabric.sample})
+    Product.create!(name: "#{cat} #{prod}", price: rand(10..30), company: company, location: location, description: description, category: cat, subcategory: subcategories[counter], sku: rand(1000000..2000000).to_s, quantity: rand(50..150), product_type: variable.sample, product_attributes: {size: size.sample, color: color.sample, fabric: fabric.sample})
     counter += 1
   end
 end
