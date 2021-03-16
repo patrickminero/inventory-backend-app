@@ -31,10 +31,13 @@ p "Created #{User.count} users"
 company = Company.create!(name: 'Clothery SL', location: 'Barcelona, Catalonia, Spain', service: 'Retail', categories: categories, subcategories: subcategories, user: user)
 p "Created company #{company.name}"
 
+
 location = Location.create!(name: 'Store#001', address: 'Gran via de les Corts Catalanes 560, Barcelona, Spain 08015', company: company)
 
 user.location_id = location.id
 user2.location_id = location.id
+user.company_id = company.id
+user2.company_id = company.id
 user.save!
 user2.save!
 
