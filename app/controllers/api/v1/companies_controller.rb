@@ -1,5 +1,5 @@
 class Api::V1::CompaniesController < ApplicationController
-  acts_as_token_authentication_handler_for User, except: [ :index ]
+  acts_as_token_authentication_handler_for User, except: [ :index, :show ]
   before_action :set_company, only: [ :show, :update, :destroy ]
 
   def index
@@ -17,6 +17,10 @@ class Api::V1::CompaniesController < ApplicationController
   end
 
   def show
+    @count = get_count(@company.id)
+    @total = get_total(@company.id)
+    @featured = get_featured(@company.id)
+    @attention = get_attention(@company.id)
   end
 
   def update
@@ -35,6 +39,42 @@ class Api::V1::CompaniesController < ApplicationController
   end
 
   private
+  def get_total(id)
+    total = 0
+    products = Product.where(company_id: id)
+    products.each do |prod|
+      total += prod.quantity
+    end
+    return total
+  end
+
+  def get_count(id)
+    array = []
+    products = Product.where(company_id: id)
+    products.each do  |prod|
+      array << prod.quantity
+    end
+    return array.max
+  end
+
+  def get_featured(id)
+    array = []
+    products = Product.where(company_id: id)
+    products.each do  |prod|
+      array << prod.quantity
+    end
+    return products.filter { |prod| prod.quantity == array.max }.first
+  end
+
+  def get_attention(id)
+    array = []
+    products = Product.where(company_id: id)
+    products.each do  |prod|
+      array << prod.quantity
+    end
+    return products.filter { |prod| prod.quantity == array.min }.first
+  end
+
   def set_company
     @company = Company.find(params[:id])
   end
