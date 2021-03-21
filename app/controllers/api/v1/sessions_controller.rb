@@ -28,6 +28,13 @@ class Api::V1::SessionsController < Devise::SessionsController
           is_success: true,
           data: {user: @user}
         }, status: :ok
+      else
+        render json: {
+          messages: "Signed In Failed - token not match",
+          is_success: false,
+          data: {}
+        }, status: :unauthorized
+      end
     else
       render json: {
         messages: "Signed In Failed - Unauthorized",
