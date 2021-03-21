@@ -19,6 +19,24 @@ class Api::V1::SessionsController < Devise::SessionsController
     end
   end
 
+  def is_logged_in(email, token)
+    user = User.where(email: sign_in_params[:email])
+    if(user)
+      if(user.authentication_token == sign_in_params[:token])
+        render json: {
+          messages: "Signed In Successfully",
+          is_success: true,
+          data: {user: @user}
+        }, status: :ok
+    else
+      render json: {
+        messages: "Signed In Failed - Unauthorized",
+        is_success: false,
+        data: {}
+      }, status: :unauthorized
+    end
+  end
+
   private
   def sign_in_params
     params.require(:user).permit :email, :password

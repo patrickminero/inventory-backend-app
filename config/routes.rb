@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       devise_scope :user do
         post "sign_up", to: "registrations#create"
         post "sign_in", to: "sessions#create"
+        post "is_logged_in", to: "sessions#is_logged_in"
       end
       resources :companies, only: [ :index, :show, :update, :create, :destroy ] do
         resources :locations
