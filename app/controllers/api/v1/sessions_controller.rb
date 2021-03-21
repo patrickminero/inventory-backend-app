@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < Devise::SessionsController
-  before_action :sign_in_params, only: :create
+  before_action :sign_in_params, only: [ :create, :is_logged_in ]
   before_action :load_user, only: :create
   # sign in
   def create
@@ -19,10 +19,10 @@ class Api::V1::SessionsController < Devise::SessionsController
     end
   end
 
-  def is_logged_in(email, token)
-    user = User.where(email: sign_in_params[:email])
-    if(user)
-      if(user.authentication_token == sign_in_params[:token])
+  def is_logged_in()
+    @user = User.where(email: sign_in_params[:email]).first
+    if(@user)
+      if(@user.authentication_token == sign_in_params[:token])
         render json: {
           messages: "Signed In Successfully",
           is_success: true,
@@ -46,7 +46,7 @@ class Api::V1::SessionsController < Devise::SessionsController
 
   private
   def sign_in_params
-    params.require(:user).permit :email, :password
+    params.require(:user).permit :email, :password, :token
   end
 
   def load_user
